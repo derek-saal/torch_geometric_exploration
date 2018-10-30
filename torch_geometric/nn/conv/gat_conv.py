@@ -63,13 +63,13 @@ class GATConv(torch.nn.Module):
         uniform(size, self.att_weight)
         uniform(size, self.bias)
 
-    def forward(self, x, edge_index):
+    def forward(self, x, edge_index, edge_attr=None):
         x = x.unsqueeze(-1) if x.dim() == 1 else x
         x = torch.mm(x, self.weight)
         x = x.view(-1, self.heads, self.out_channels)
 
         # Add self-loops to adjacency matrix.
-        edge_index, edge_attr = remove_self_loops(edge_index)
+        edge_index, edge_attr = remove_self_loops(edge_index, edge_attr)
         edge_index = add_self_loops(edge_index, num_nodes=x.size(0))
         row, col = edge_index
 
