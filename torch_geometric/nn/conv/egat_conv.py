@@ -7,9 +7,9 @@ from torch_geometric.utils import remove_self_loops, add_self_loops_with_edge_at
 from ..inits import uniform
 
 
-class GATConv(torch.nn.Module):
-    """Graph Attentional Layer from the `"Graph Attention Networks (GAT)"
-    <https://arxiv.org/abs/1710.10903>`_ paper.
+class EGATConv(torch.nn.Module):
+    """Adaptive Edge Features Graph Attentional Layer from the `"Adaptive Edge FeaturesGraph Attention Networks (GAT)"
+    <https://arxiv.org/abs/1809.02709`_ paper.
 
     Args:
         in_channels (int): Size of each input sample.
@@ -35,7 +35,7 @@ class GATConv(torch.nn.Module):
                  negative_slope=0.2,
                  dropout=0,
                  bias=True):
-        super(GATConv, self).__init__()
+        super(EGATConv, self).__init__()
 
         self.in_channels = in_channels
         self.out_channels = out_channels
@@ -78,6 +78,7 @@ class GATConv(torch.nn.Module):
         alpha = (alpha * self.att_weight).sum(dim=-1)
         alpha = F.leaky_relu(alpha, self.negative_slope)
         alpha = softmax(alpha, row, num_nodes=x.size(0))
+        alpha = torch.mul(alpha, edge_attr.float())  # This will broadcast edge_attr across all attentions
 
         # Sample attention coefficients stochastically.
         dropout = self.dropout if self.training else 0

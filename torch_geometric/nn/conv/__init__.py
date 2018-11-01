@@ -3,6 +3,7 @@ from .gcn_conv import GCNConv
 from .cheb_conv import ChebConv
 from .nn_conv import NNConv
 from .gat_conv import GATConv
+from .egat_conv import EGATConv
 from .sage_conv import SAGEConv
 from .gin_conv import GINConv
 
@@ -11,6 +12,7 @@ __all__ = [
     'GCNConv',
     'ChebConv',
     'NNConv',
+    'EGATConv',
     'GATConv',
     'SAGEConv',
     'GINConv',
