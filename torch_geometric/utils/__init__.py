@@ -2,7 +2,7 @@ from .degree import degree
 from .softmax import softmax
 from .undirected import is_undirected, to_undirected
 from .isolated import contains_isolated_nodes
-from .loop import contains_self_loops, remove_self_loops, add_self_loops
+from .loop import contains_self_loops, remove_self_loops, add_self_loops, add_self_loops_with_edge_attr
 from .one_hot import one_hot
 from .grid import grid
 from .normalized_cut import normalized_cut
@@ -19,6 +19,7 @@ __all__ = [
     'contains_self_loops',
     'remove_self_loops',
     'add_self_loops',
+    'add_self_loops_with_edge_attr',
     'contains_isolated_nodes',
     'one_hot',
     'grid',
