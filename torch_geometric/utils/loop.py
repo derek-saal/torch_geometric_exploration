@@ -37,7 +37,7 @@ def add_self_loops_with_edge_attr(edge_index, edge_attr, num_nodes=None):
     loop = torch.arange(0, num_nodes, dtype=dtype, device=device)
     loop = loop.unsqueeze(0).repeat(2, 1)
     edge_index = torch.cat([edge_index, loop], dim=1)
-    ones = torch.ones(loop.shape[1])
+    ones = torch.ones([loop.shape[1], 1], dtype=edge_attr.dtype)
     edge_attr = torch.cat([edge_attr, ones], dim=0)
 
-    return edge_index
+    return edge_index, edge_attr
