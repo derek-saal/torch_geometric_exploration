@@ -11,3 +11,4 @@ alpha/
 !docs/build/
 !torch_geometric/data/
 !test/data/
+.idea/
