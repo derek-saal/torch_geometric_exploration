@@ -20,15 +20,16 @@ data.test_mask[data.num_nodes - 500:] = 1
 class Net(torch.nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.att1 = EGATConv(data.num_features, 8, heads=8, dropout=0.6)
-        self.att2 = EGATConv(8 * 8, data.num_classes, dropout=0.6)
+        self.att1 = EGATConv(data.num_features, 8, heads=1, dropout=0.6)
+        self.att2 = EGATConv(8, data.num_classes, dropout=0.6)
 
     def forward(self):
         x = F.dropout(data.x, p=0.6, training=self.training)
-        x = F.elu(self.att1(x, data.edge_index, data.edge_attr))
+        x, edge_index, e = self.att1(x, data.edge_index, data.edge_attr)
+        x = F.elu(x)
         x = F.dropout(x, p=0.6, training=self.training)
-        x = self.att2(x, data.edge_index, data.edge_attr)
-        return F.log_softmax(x, dim=1)
+        x = self.att2(x, edge_index, e)
+        return F.log_softmax(x[0], dim=1)
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

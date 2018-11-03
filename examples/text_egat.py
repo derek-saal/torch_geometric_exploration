@@ -19,9 +19,10 @@ class Net(torch.nn.Module):
 
     def forward(self):
         x = F.dropout(data.x, p=0.6, training=self.training)
-        x = F.elu(self.att1(x, data.edge_index, data.edge_attr))
+        x, e, edge_index = self.att1(x, data.edge_index, data.edge_attr)
+        x = F.elu(x)
         x = F.dropout(x, p=0.6, training=self.training)
-        x = self.att2(x, data.edge_index, data.edge_attr)
+        x = self.att2(x, edge_index, e)
         return F.log_softmax(x, dim=1)
 
 
